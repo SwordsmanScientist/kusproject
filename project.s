@@ -8,20 +8,18 @@ power:
 
 
 	movl 12(%ebp), %ebx		#ebx = i
+	movl 8(%ebp), edx		#edx = x
+	movl %edx, %eax			#eax = x
+L1:
 	test %ebx, %ebx			#if i == 0, jump to done
 	je done
-	
+
 	#Could try adding and shifting to make more efficient
-	movl 8(%ebp), edx		#edx = x
-	imull %edx, %edx		#x = x*x
+	imull %edx, %eax		#x = x*x
 	decl %ebx				#i = i-1
-	pushl %ebx				
-	pushl %edx
-	call power				#power(x,i)
+	jmp L1
 	
-	done:
-	popl 	%edx
-	popl 	%ebx
+done:
 	popl	%ebp
 	ret
 	.size	power, .-power
