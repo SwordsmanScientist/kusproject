@@ -45,7 +45,7 @@ FL1:
 	popl	%edx
 	popl	%ecx
 	
-	movl	%eax, (%edi)	a[i] = eax
+	movl	%eax, (%edi)	#a[i] = eax
 	incl	%ecx
 	jmp FL1
 	
