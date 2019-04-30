@@ -8,7 +8,7 @@ power:
 
 
 	movl 12(%ebp), %ebx		#ebx = i
-	movl 8(%ebp), edx		#edx = x
+	movl 8(%ebp), %edx		#edx = x
 	movl %edx, %eax			#eax = x
 L1:
 	test %ebx, %ebx			#if i == 0, jump to done
@@ -66,7 +66,25 @@ fillarray2:
 
 	# INSERT YOUR CODE HERE
 	# USE REGISTERS FOR LOCAL VARIABLES
-	
+        subl    $16, %esp
+        movl    $1, -4(%ebp)
+        movl    $0, -8(%ebp)
+        jmp     .L3
+.L4:
+        movl    -4(%ebp), %eax
+        imull   8(%ebp), %eax
+        movl    %eax, -4(%ebp)
+        movl    -8(%ebp), %eax
+        leal    0(,%eax,4), %eax
+        movl    12(%ebp), %eax
+        addl    %eax, %edx
+        movl    -4(%ebp), %eax
+        movl    %eax, (%edx)
+        addl    $1, -8(%ebp)
+.L3:
+        movl    -8(%ebp), %eax
+        cmpl    16(%ebp), %eax
+        jl      .L4
 	popl	%ebp
 	ret
 	.size	fillarray2, .-fillarray2
