@@ -41,7 +41,7 @@ FL1:
 	
 	pushl	%ecx
 	pushl 	%edx
-	call power		#eax = power(x,i)
+	call power		#eax = power(x,i)	!!! Seg fault occurs whenever this line is included
 	popl	%edx
 	popl	%ecx
 	
