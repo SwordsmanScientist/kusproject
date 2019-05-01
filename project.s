@@ -1,4 +1,4 @@
-	.file	"project.c"
+.file	"project.c"
 	.text
 	.globl	power
 	.type	power, @function
@@ -9,7 +9,7 @@ power:
 
 	movl 12(%ebp), %ebx		#ebx = i
 	movl 8(%ebp), %edx		#edx = x
-	movl %edx, %eax			#eax = x
+	movl $1, %eax
 L1:
 	test %ebx, %ebx			#if i == 0, jump to done
 	je done
@@ -36,7 +36,7 @@ fillarray:
 	
 	
 FL1:
-	cmpl	%eax, %ecx			#if i == n, return
+	cmpl	%ebx, %ecx			#if i == n, return
 	je		F1End
 	
 	pushl	%ecx
@@ -47,7 +47,8 @@ FL1:
 	
 	movl	%eax, (%edi)	#a[i] = eax
 	incl	%ecx
-	jmp FL1
+	add		$4, %edi
+	jmp FL1	
 	
 	
 	
@@ -64,27 +65,23 @@ fillarray2:
 	pushl	%ebp
 	movl	%esp, %ebp
 
-	# INSERT YOUR CODE HERE
-	# USE REGISTERS FOR LOCAL VARIABLES
-        subl    $16, %esp
-        movl    $1, -4(%ebp)
-        movl    $0, -8(%ebp)
-        jmp     .L3
-.L4:
-        movl    -4(%ebp), %eax
-        imull   8(%ebp), %eax
-        movl    %eax, -4(%ebp)
-        movl    -8(%ebp), %eax
-        leal    0(,%eax,4), %eax
-        movl    12(%ebp), %eax
-        addl    %eax, %edx
-        movl    -4(%ebp), %eax
-        movl    %eax, (%edx)
-        addl    $1, -8(%ebp)
-.L3:
-        movl    -8(%ebp), %eax
-        cmpl    16(%ebp), %eax
-        jl      .L4
+	xor 	%ecx, %ecx		#ecx = i = 0
+	movl	8(%ebp), %edx		#edx = x
+	movl	12(%ebp), %edi		#edi = a
+	movl	16(%ebp), %ebx		#ebx = n
+	movl	$1, %eax
+	
+FL2:
+	cmpl	%ebx, %ecx			#if i == n, return
+	je		F2End
+	
+	movl	%eax, (%edi)	#a[i] = eax
+	imull	%edx, %eax
+	incl	%ecx
+	add		$4, %edi
+	jmp FL2
+	
+F2End:
 	popl	%ebp
 	ret
 	.size	fillarray2, .-fillarray2
@@ -102,7 +99,8 @@ compare:
 CLoop:
 	test	%ecx, %ecx		#if n == 0, return 1 (reached end)
 	je		CLT
-	cmpl	(%edx), (%ebx)	#if elements not equal, return 0
+	movl	(%ebx), %esi
+	cmpl	(%edx), %esi	#if elements not equal, return 0
 	jne		CEnd
 	
 	addl	$4, %edx	#gets next element
