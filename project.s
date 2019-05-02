@@ -1,3 +1,4 @@
+#zdy262		Benjamin Schneider
 .file	"project.c"
 	.text
 	.globl	power
@@ -36,14 +37,16 @@ fillarray:
 	
 	
 FL1:
-	cmpl	%ebx, %ecx			#if i == n, return
+	cmpl	%ebx, %ecx	#if i == n, return
 	je		F1End
 	
-	pushl	%ecx
-	pushl 	%edx
-	call power		#eax = power(x,i)	!!! Seg fault occurs whenever this line is included
+	push	%ebx		#saves ebx
+	pushl	%ecx		#pass i as 2nd param
+	pushl 	%edx		#pass x as 1st param
+	call power			#eax = power(x,i)
 	popl	%edx
 	popl	%ecx
+	pop		%ebx		#restores ebx
 	
 	movl	%eax, (%edi)	#a[i] = eax
 	incl	%ecx
@@ -51,10 +54,7 @@ FL1:
 	jmp FL1	
 	
 	
-	
 
-	# INSERT YOUR CODE HERE
-	# USE REGISTERS FOR LOCAL VARIABLES
 F1End:
 	popl	%ebp
 	ret
