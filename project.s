@@ -1,4 +1,5 @@
 #zdy262		Benjamin Schneider
+#axx715		Christian Aguirre
 .file	"project.c"
 	.text
 	.globl	power
@@ -46,7 +47,7 @@ FL1:
 	call power			#eax = power(x,i)
 	popl	%edx
 	popl	%ecx
-	pop		%ebx		#restores ebx
+	popl	%ebx		#restores ebx
 	
 	movl	%eax, (%edi)	#a[i] = eax
 	incl	%ecx
